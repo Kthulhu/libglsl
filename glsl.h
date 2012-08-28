@@ -82,6 +82,8 @@ namespace cwc
    public:
                   aVertexShader();  //!< Constructor for Vertex Shader
       virtual     ~aVertexShader(); 
+		  //BUG: WTF ?
+                  //GLuint glCreateShader(unsigned int arg1);
    };
 
 //-----------------------------------------------------------------------------
@@ -92,6 +94,8 @@ namespace cwc
    public:
                   aFragmentShader(); //!< Constructor for Fragment Shader
       virtual     ~aFragmentShader();
+      //BUG: WTF ?
+                  //GLuint glCreateShader(unsigned int arg1);
     
    };
 
@@ -103,6 +107,8 @@ namespace cwc
    public:
                    aGeometryShader(); //!< Constructor for Geometry Shader
       virtual     ~aGeometryShader();
+      //BUG: WTF ?
+                   //GLuint glCreateShader(unsigned int arg1);
    };
 
 //-----------------------------------------------------------------------------
@@ -178,9 +184,9 @@ namespace cwc
       /*! Bind Vertex Attribute Location
       Warning: NVidia implementation is different than the GLSL standard:
       GLSL attempts to eliminate aliasing of vertex attributes but this is 
-      integral to NVIDIA’s hardware approach and necessary for maintaining 
+      integral to NVIDIAï¿½s hardware approach and necessary for maintaining 
       compatibility with existing OpenGL applications that NVIDIA customers rely on.
-      NVIDIA’s GLSL implementation therefore does not allow built-in vertex attributes
+      NVIDIAï¿½s GLSL implementation therefore does not allow built-in vertex attributes
       to collide with a generic vertex attributes that is assigned to a particular vertex 
       attribute index with glBindAttribLocation. For example, you should not use gl_Normal 
       (a built-in vertex attribute) and also use glBindAttribLocation to bind a generic 

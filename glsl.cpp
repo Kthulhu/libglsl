@@ -88,33 +88,12 @@ char* aGLSLStrings[] = {
 	   glErr = glGetError();
 	   while (glErr != GL_NO_ERROR) 
        {
-	 		switch (glErr)
-		{
-			case GL_INVALID_ENUM:
-				fprintf( stderr, "Invalid enum.\n" );
-				break;
-			case GL_INVALID_VALUE:
-				fprintf( stderr, "Invalid value.\n" );
-				break;
-			case GL_INVALID_OPERATION:
-				fprintf( stderr, "Invalid Operation.\n" );
-				break;
-			case GL_STACK_OVERFLOW:
-				fprintf( stderr, "Stack overflow.\n" );
-				break;
-			case GL_STACK_UNDERFLOW:
-				fprintf(stderr, "Stack underflow.\n" );
-				break;
-			case GL_OUT_OF_MEMORY:
-				fprintf( stderr, "Out of memory.\n" );
-				break;
-		}
-// 	     const GLubyte* sError = gluErrorString(glErr);
-// 
-// 		 if (sError)
-// 			cout << "GL Error #" << glErr << "(" << gluErrorString(glErr) << ") " << " in File " << file.c_str() << " at line: " << line << endl;
-// 		 else
-// 		    cout << "GL Error #" << glErr << " (no message available)" << " in File " << file.c_str() << " at line: " << line << endl;
+	     const GLubyte* sError = gluErrorString(glErr);
+
+		 if (sError)
+			cout << "GL Error #" << glErr << "(" << gluErrorString(glErr) << ") " << " in File " << file.c_str() << " at line: " << line << endl;
+		 else
+		    cout << "GL Error #" << glErr << " (no message available)" << " in File " << file.c_str() << " at line: " << line << endl;
 			
 		 retCode = 1;
 		 glErr = glGetError();
@@ -129,9 +108,13 @@ char* aGLSLStrings[] = {
    {
       if (extensions_init) return true;
       extensions_init = true;
-
+   
+      //will cause errors in core profile if you don;t
+      //set glewExperimental. see http://www.opengl.org/wiki/OpenGL_Loading_Library
+      glewExperimental=GL_TRUE;
       GLenum err = glewInit();
-
+      CHECK_GL_ERROR();  
+   
       if (GLEW_OK != err)
       {
          cout << "Error:" << glewGetErrorString(err) << endl;
@@ -149,7 +132,7 @@ char* aGLSLStrings[] = {
       return true;
    }
 
-
+   //MADHU: This function is a MESS - look into later.
    bool HasGLSLSupport(void)
    {
       //bGeometryShader = HasGeometryShaderSupport();
@@ -160,10 +143,27 @@ char* aGLSLStrings[] = {
      
       if (!extensions_init) InitOpenGLExtensions();  // extensions were not yet initialized!!
 
-      
-      if (GLEW_VERSION_2_0)
+
+      if(GLEW_VERSION_3_2){
+	cout << "OpenGL 3.2 (or higher) is available!" << endl;
+	useGLSL = true;
+	bGeometryShader = true;
+	bGPUShader4 = true;
+	cout << "[OK] OpenGL Shading Language is available!\n\n";
+	return true;
+      }
+      else if(GLEW_VERSION_3_1){
+	cout << "OpenGL 3.1 core functions are available!" << endl;
+      }
+      else if(GLEW_VERSION_3_0){
+	cout << "OpenGL 3.0 core functions are available!" << endl;
+      }
+      else if(GLEW_VERSION_2_1){
+         cout << "OpenGL 2.1 core functions are available!" << endl;
+      }
+      else if (GLEW_VERSION_2_0)
       {
-         cout << "OpenGL 2.0 (or higher) is available!" << endl;
+         cout << "OpenGL 2.0 core functions are available!" << endl;
       }
       else if (GLEW_VERSION_1_5)
       {
@@ -182,11 +182,14 @@ char* aGLSLStrings[] = {
          cout << "OpenGL 1.2 core functions are available" << endl;
       }
 
+      //if we have opengl ver < 3.2, need to load extensions.
+      cout<<"Checking for Extensions: "<<endl;
+	    
       //Extensions supported
       if (!glewIsSupported("GL_ARB_fragment_shader"))
       {
           cout << "[WARNING] GL_ARB_fragment_shader extension is not available!\n";
-          //useGLSL = false;
+          useGLSL = false;
       }else{
           cout << "[OK] GL_ARB_fragment_shader extension is available!\n";
 
@@ -195,7 +198,7 @@ char* aGLSLStrings[] = {
       if (!glewIsSupported("GL_ARB_vertex_shader"))
       {
           cout << "[WARNING] GL_ARB_vertex_shader extension is not available!\n";
-          //useGLSL = false;
+          useGLSL = false;
       }else{
           cout << "[OK] GL_ARB_vertex_shader extension is available!\n";
       }
@@ -203,12 +206,12 @@ char* aGLSLStrings[] = {
       if (!glewIsSupported("GL_ARB_shader_objects"))
       {
           cout << "[WARNING] GL_ARB_shader_objects extension is not available!\n";
-          //useGLSL = false;
+          useGLSL = false;
       }else{
           cout << "[OK] GL_ARB_shader_objects extension is available!\n";
       }
       
-      
+
       if (!glewIsSupported("GL_ARB_geometry_shader4"))
       {
           cout << "[WARNING] GL_ARB_geometry_shader4 extension is not available!\n";
@@ -293,6 +296,8 @@ glShader::glShader()
 
 //----------------------------------------------------------------------------- 
 
+
+//NOTE: There is a bug here.
 glShader::~glShader()
 {
     if (linker_log!=0) free(linker_log);
@@ -305,7 +310,7 @@ glShader::~glShader()
                            // the ShaderObject! Always delete ShaderObjects last!
             if (_mM) delete ShaderList[i]; 
        }                      
-
+//BUG according to http://www.opengl.org/sdk/docs/man/xhtml/glDeleteShader.xml - this is wrong !!
        glDeleteShader(ProgramObject);
        CHECK_GL_ERROR();
     }
@@ -1585,7 +1590,9 @@ aGeometryShader::~aGeometryShader()
 
 glShaderManager::glShaderManager()
 {
+ 
    InitOpenGLExtensions();
+  
    _nInputPrimitiveType = GL_TRIANGLES;
    _nOutputPrimitiveType = GL_TRIANGLE_STRIP;
    _nVerticesOut = 3;
@@ -1642,8 +1649,7 @@ glShader* glShaderManager::loadfromFile(const string& vertexFile, const string& 
      delete tFragmentShader;
      return 0;
    }
-
-  
+ 
   // Load fragment program
   if (!fragmentFile.empty())
   if (tFragmentShader->load(fragmentFile.c_str()) != 0)
