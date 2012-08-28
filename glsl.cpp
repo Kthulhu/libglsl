@@ -3,7 +3,10 @@ glsl.cpp
 Version: 1.0.0_rc4
 Last update: 2006/11/12 (Geometry Shader Support)
 
-(c) 2003-2006 by Martin Christen. All Rights reserved.
+http://web.engr.oregonstate.edu/~mjb/cs519/
+http://web.engr.oregonstate.edu/~mjb/cs519/glslprogram.h
+http://web.engr.oregonstate.edu/~mjb/cs519/glslprogram.cpp
+web.engr.oregonstate.edu/~mjb/glsl/glsl.pdf
 *********************************************************************/
 
 #include "glsl.h"
@@ -161,19 +164,19 @@ char* aGLSLStrings[] = {
       if (GL_TRUE != glewGetExtension("GL_ARB_fragment_shader"))
       {
           cout << "[WARNING] GL_ARB_fragment_shader extension is not available!\n";
-          useGLSL = false;
+          //useGLSL = false;
       }
 
       if (GL_TRUE != glewGetExtension("GL_ARB_vertex_shader"))
       {
           cout << "[WARNING] GL_ARB_vertex_shader extension is not available!\n";
-          useGLSL = false;
+          //useGLSL = false;
       }
 
       if (GL_TRUE != glewGetExtension("GL_ARB_shader_objects"))
       {
           cout << "[WARNING] GL_ARB_shader_objects extension is not available!\n";
-          useGLSL = false;
+          //useGLSL = false;
       }
 
       if (useGLSL)
@@ -189,17 +192,17 @@ char* aGLSLStrings[] = {
    }
 
 
-   bool HasOpenGL2Support(void)
-   {
-      if (!extensions_init) InitOpenGLExtensions();
-
-      return (GLEW_VERSION_2_0 == GL_TRUE);
-   }   
+//    bool HasOpenGL2Support(void)
+//    {
+//       if (!extensions_init) InitOpenGLExtensions();
+// 
+//       return (GLEW_VERSION_2_0 == GL_TRUE);
+//    }   
 
 
    bool HasGeometryShaderSupport(void)
    {
-      if (GL_TRUE != glewGetExtension("GL_EXT_geometry_shader4"))
+      if (GL_TRUE != glewGetExtension("GL_ARB_geometry_shader4"))
          return false;
       
       return true;
@@ -207,7 +210,7 @@ char* aGLSLStrings[] = {
 
    bool HasShaderModel4(void)
    {
-      if (GL_TRUE != glewGetExtension("GL_EXT_gpu_shader4"))
+      if (GL_TRUE != glewGetExtension("GL_gpu_shader4"))
          return false;
 
       return true;
@@ -314,9 +317,9 @@ unsigned int i;
 
     if (_bUsesGeometryShader)
     {
-       glProgramParameteriEXT(ProgramObject, GL_GEOMETRY_INPUT_TYPE_EXT, _nInputPrimitiveType);
-       glProgramParameteriEXT(ProgramObject, GL_GEOMETRY_OUTPUT_TYPE_EXT, _nOutputPrimitiveType);
-       glProgramParameteriEXT(ProgramObject, GL_GEOMETRY_VERTICES_OUT_EXT, _nVerticesOut);
+       glProgramParameteri(ProgramObject, GL_GEOMETRY_INPUT_TYPE, _nInputPrimitiveType);
+       glProgramParameteri(ProgramObject, GL_GEOMETRY_OUTPUT_TYPE, _nOutputPrimitiveType);
+       glProgramParameteri(ProgramObject, GL_GEOMETRY_VERTICES_OUT, _nVerticesOut);
     }
 
     if (is_linked)  // already linked, detach everything first
@@ -376,7 +379,7 @@ if (!useGLSL) return aGLSLStrings[0];
         free(linker_log);
         linker_log =0;
     }
-    if ((linker_log = (GLcharARB*)malloc(blen)) == NULL) 
+    if ((linker_log = (GLchar*)malloc(blen)) == NULL) 
      {
         printf("ERROR: Could not allocate compiler_log buffer\n");
         return aGLSLStrings[3];
@@ -421,7 +424,7 @@ if (!_noshader) return;
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform1f(GLcharARB* varname, GLfloat v0, GLint index)
+bool glShader::setUniform1f(GLchar* varname, GLfloat v0, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -443,7 +446,7 @@ bool glShader::setUniform1f(GLcharARB* varname, GLfloat v0, GLint index)
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform2f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLint index)
+bool glShader::setUniform2f(GLchar* varname, GLfloat v0, GLfloat v1, GLint index)
 {
    if (!useGLSL) return false; // GLSL not available
    if (!_noshader) return true;
@@ -464,7 +467,7 @@ bool glShader::setUniform2f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLint in
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform3f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLint index)
+bool glShader::setUniform3f(GLchar* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -485,7 +488,7 @@ bool glShader::setUniform3f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLfloat 
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform4f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3, GLint index)
+bool glShader::setUniform4f(GLchar* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -506,7 +509,7 @@ bool glShader::setUniform4f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLfloat 
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform1i(GLcharARB* varname, GLint v0, GLint index)
+bool glShader::setUniform1i(GLchar* varname, GLint v0, GLint index)
 { 
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -527,7 +530,7 @@ bool glShader::setUniform1i(GLcharARB* varname, GLint v0, GLint index)
 
 //-----------------------------------------------------------------------------
 
-bool glShader::setUniform2i(GLcharARB* varname, GLint v0, GLint v1, GLint index)
+bool glShader::setUniform2i(GLchar* varname, GLint v0, GLint v1, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -549,7 +552,7 @@ bool glShader::setUniform2i(GLcharARB* varname, GLint v0, GLint v1, GLint index)
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform3i(GLcharARB* varname, GLint v0, GLint v1, GLint v2, GLint index)
+bool glShader::setUniform3i(GLchar* varname, GLint v0, GLint v1, GLint v2, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -570,7 +573,7 @@ bool glShader::setUniform3i(GLcharARB* varname, GLint v0, GLint v1, GLint v2, GL
 
 //-----------------------------------------------------------------------------
 
-bool glShader::setUniform4i(GLcharARB* varname, GLint v0, GLint v1, GLint v2, GLint v3, GLint index)
+bool glShader::setUniform4i(GLchar* varname, GLint v0, GLint v1, GLint v2, GLint v3, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -591,7 +594,7 @@ bool glShader::setUniform4i(GLcharARB* varname, GLint v0, GLint v1, GLint v2, GL
 //-----------------------------------------------------------------------------
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform1ui(GLcharARB* varname, GLuint v0, GLint index)
+bool glShader::setUniform1ui(GLchar* varname, GLuint v0, GLint index)
 { 
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -606,14 +609,14 @@ bool glShader::setUniform1ui(GLcharARB* varname, GLuint v0, GLint index)
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform1uiEXT(loc, v0);
+    glUniform1ui(loc, v0);
     
     return true;
 }
 
 //-----------------------------------------------------------------------------
 
-bool glShader::setUniform2ui(GLcharARB* varname, GLuint v0, GLuint v1, GLint index)
+bool glShader::setUniform2ui(GLchar* varname, GLuint v0, GLuint v1, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -628,7 +631,7 @@ bool glShader::setUniform2ui(GLcharARB* varname, GLuint v0, GLuint v1, GLint ind
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform2uiEXT(loc, v0, v1);
+    glUniform2ui(loc, v0, v1);
 
 
     return true;
@@ -636,7 +639,7 @@ bool glShader::setUniform2ui(GLcharARB* varname, GLuint v0, GLuint v1, GLint ind
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform3ui(GLcharARB* varname, GLuint v0, GLuint v1, GLuint v2, GLint index)
+bool glShader::setUniform3ui(GLchar* varname, GLuint v0, GLuint v1, GLuint v2, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -651,14 +654,14 @@ bool glShader::setUniform3ui(GLcharARB* varname, GLuint v0, GLuint v1, GLuint v2
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform3uiEXT(loc, v0, v1, v2);
+    glUniform3ui(loc, v0, v1, v2);
 
     return true;
 }
 
 //-----------------------------------------------------------------------------
 
-bool glShader::setUniform4ui(GLcharARB* varname, GLuint v0, GLuint v1, GLuint v2, GLuint v3, GLint index)
+bool glShader::setUniform4ui(GLchar* varname, GLuint v0, GLuint v1, GLuint v2, GLuint v3, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -673,13 +676,13 @@ bool glShader::setUniform4ui(GLcharARB* varname, GLuint v0, GLuint v1, GLuint v2
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform4uiEXT(loc, v0, v1, v2, v3);
+    glUniform4ui(loc, v0, v1, v2, v3);
 
     return true;
 }
 //-----------------------------------------------------------------------------
 
-bool glShader::setUniform1fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index)
+bool glShader::setUniform1fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -697,7 +700,7 @@ bool glShader::setUniform1fv(GLcharARB* varname, GLsizei count, GLfloat *value, 
 
     return true;
 }
-bool glShader::setUniform2fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index)
+bool glShader::setUniform2fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -718,7 +721,7 @@ bool glShader::setUniform2fv(GLcharARB* varname, GLsizei count, GLfloat *value, 
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform3fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index)
+bool glShader::setUniform3fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -739,7 +742,7 @@ bool glShader::setUniform3fv(GLcharARB* varname, GLsizei count, GLfloat *value, 
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform4fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index)
+bool glShader::setUniform4fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -760,7 +763,7 @@ bool glShader::setUniform4fv(GLcharARB* varname, GLsizei count, GLfloat *value, 
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform1iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index)
+bool glShader::setUniform1iv(GLchar* varname, GLsizei count, GLint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -781,7 +784,7 @@ bool glShader::setUniform1iv(GLcharARB* varname, GLsizei count, GLint *value, GL
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform2iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index)
+bool glShader::setUniform2iv(GLchar* varname, GLsizei count, GLint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -802,7 +805,7 @@ bool glShader::setUniform2iv(GLcharARB* varname, GLsizei count, GLint *value, GL
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform3iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index)
+bool glShader::setUniform3iv(GLchar* varname, GLsizei count, GLint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -823,7 +826,7 @@ bool glShader::setUniform3iv(GLcharARB* varname, GLsizei count, GLint *value, GL
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform4iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index)
+bool glShader::setUniform4iv(GLchar* varname, GLsizei count, GLint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -844,7 +847,7 @@ bool glShader::setUniform4iv(GLcharARB* varname, GLsizei count, GLint *value, GL
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform1uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index)
+bool glShader::setUniform1uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -859,14 +862,14 @@ bool glShader::setUniform1uiv(GLcharARB* varname, GLsizei count, GLuint *value, 
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform1uivEXT(loc, count, value);
+    glUniform1uiv(loc, count, value);
 
     return true;
 }
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform2uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index)
+bool glShader::setUniform2uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -881,14 +884,14 @@ bool glShader::setUniform2uiv(GLcharARB* varname, GLsizei count, GLuint *value, 
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform2uivEXT(loc, count, value);
+    glUniform2uiv(loc, count, value);
 
     return true;
 }
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform3uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index)
+bool glShader::setUniform3uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -903,14 +906,14 @@ bool glShader::setUniform3uiv(GLcharARB* varname, GLsizei count, GLuint *value, 
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform3uivEXT(loc, count, value);
+    glUniform3uiv(loc, count, value);
 
     return true;
 }
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniform4uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index)
+bool glShader::setUniform4uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!bGPUShader4) return false;
@@ -925,14 +928,14 @@ bool glShader::setUniform4uiv(GLcharARB* varname, GLsizei count, GLuint *value, 
     if (loc==-1) 
        return false;  // can't find variable / invalid index
     
-    glUniform4uivEXT(loc, count, value);
+    glUniform4uiv(loc, count, value);
 
     return true;
 }
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniformMatrix2fv(GLcharARB* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index)
+bool glShader::setUniformMatrix2fv(GLchar* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -953,7 +956,7 @@ bool glShader::setUniformMatrix2fv(GLcharARB* varname, GLsizei count, GLboolean 
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniformMatrix3fv(GLcharARB* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index)
+bool glShader::setUniformMatrix3fv(GLchar* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -974,7 +977,7 @@ bool glShader::setUniformMatrix3fv(GLcharARB* varname, GLsizei count, GLboolean 
 
 //----------------------------------------------------------------------------- 
 
-bool glShader::setUniformMatrix4fv(GLcharARB* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index)
+bool glShader::setUniformMatrix4fv(GLchar* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index)
 {
     if (!useGLSL) return false; // GLSL not available
     if (!_noshader) return true;
@@ -995,7 +998,7 @@ bool glShader::setUniformMatrix4fv(GLcharARB* varname, GLsizei count, GLboolean 
 
 //----------------------------------------------------------------------------- 
 
-GLint glShader::GetUniformLocation(const GLcharARB *name)
+GLint glShader::GetUniformLocation(const GLchar *name)
 {
 	GLint loc;
 
@@ -1010,7 +1013,7 @@ GLint glShader::GetUniformLocation(const GLcharARB *name)
 
 //----------------------------------------------------------------------------- 
 
-void glShader::getUniformfv(GLcharARB* varname, GLfloat* values, GLint index)
+void glShader::getUniformfv(GLchar* varname, GLfloat* values, GLint index)
 {
 if (!useGLSL) return;
  
@@ -1029,7 +1032,7 @@ if (!useGLSL) return;
 
 //----------------------------------------------------------------------------- 
 
-void glShader::getUniformiv(GLcharARB* varname, GLint* values, GLint index)
+void glShader::getUniformiv(GLchar* varname, GLint* values, GLint index)
 {
     if (!useGLSL) return;
 
@@ -1048,7 +1051,7 @@ void glShader::getUniformiv(GLcharARB* varname, GLint* values, GLint index)
 
 //----------------------------------------------------------------------------- 
 
-void glShader::getUniformuiv(GLcharARB* varname, GLuint* values, GLint index)
+void glShader::getUniformuiv(GLchar* varname, GLuint* values, GLint index)
 {
     if (!useGLSL) return;
 
@@ -1061,7 +1064,7 @@ void glShader::getUniformuiv(GLcharARB* varname, GLuint* values, GLint index)
     if (loc==-1) 
        return;  // can't find variable / invalid index
 	
-	glGetUniformuivEXT(ProgramObject, loc, values);
+	glGetUniformuiv(ProgramObject, loc, values);
 
 }
 
@@ -1221,7 +1224,7 @@ bool glShader::setVertexAttrib1i(GLuint index, GLint v0)
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI1iEXT(index, v0);
+   glVertexAttribI1i(index, v0);
 
    return true;
 }
@@ -1234,7 +1237,7 @@ bool glShader::setVertexAttrib2i(GLuint index, GLint v0, GLint v1)
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI2iEXT(index, v0, v1);
+   glVertexAttribI2i(index, v0, v1);
 
    return true;
 }
@@ -1246,7 +1249,7 @@ bool glShader::setVertexAttrib3i(GLuint index, GLint v0, GLint v1, GLint v2)
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI3iEXT(index, v0, v1, v2);
+   glVertexAttribI3i(index, v0, v1, v2);
 
    return true;
 }
@@ -1257,7 +1260,7 @@ bool glShader::setVertexAttrib4i(GLuint index, GLint v0, GLint v1, GLint v2, GLi
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI4iEXT(index, v0, v1, v2, v3);
+   glVertexAttribI4i(index, v0, v1, v2, v3);
 
    return true;
 }
@@ -1268,7 +1271,7 @@ bool glShader::setVertexAttrib1ui(GLuint index, GLuint v0)
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI1uiEXT(index, v0);
+   glVertexAttribI1ui(index, v0);
 
    return true;
 }
@@ -1281,7 +1284,7 @@ bool glShader::setVertexAttrib2ui(GLuint index, GLuint v0, GLuint v1)
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI2uiEXT(index, v0, v1);
+   glVertexAttribI2ui(index, v0, v1);
 
    return true;
 }
@@ -1293,7 +1296,7 @@ bool glShader::setVertexAttrib3ui(GLuint index, GLuint v0, GLuint v1, GLuint v2)
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI3uiEXT(index, v0, v1, v2);
+   glVertexAttribI3ui(index, v0, v1, v2);
 
    return true;
 }
@@ -1304,7 +1307,7 @@ bool glShader::setVertexAttrib4ui(GLuint index, GLuint v0, GLuint v1, GLuint v2,
    if (!bGPUShader4) return false;
    if (!_noshader) return true;
 
-   glVertexAttribI4uiEXT(index, v0, v1, v2, v3);
+   glVertexAttribI4ui(index, v0, v1, v2, v3);
 
    return true;
 }
@@ -1428,7 +1431,7 @@ if (!useGLSL) return aGLSLStrings[0];
         free(compiler_log);
         compiler_log =0;
     }
-    if ((compiler_log = (GLcharARB*)malloc(blen)) == NULL) 
+    if ((compiler_log = (GLchar*)malloc(blen)) == NULL) 
      {
         printf("ERROR: Could not allocate compiler_log buffer\n");
         return aGLSLStrings[3];
@@ -1458,10 +1461,10 @@ GLint compiled = 0;
   if (ShaderSource==0) return false;
 
   GLint	length = (GLint) strlen((const char*)ShaderSource);
-  glShaderSourceARB(ShaderObject, 1, (const GLcharARB **)&ShaderSource, &length);
+  glShaderSource(ShaderObject, 1, (const GLchar **)&ShaderSource, &length);
   CHECK_GL_ERROR();
 
-  glCompileShaderARB(ShaderObject); 
+  glCompileShader(ShaderObject); 
   CHECK_GL_ERROR();
   glGetObjectParameterivARB(ShaderObject, GL_COMPILE_STATUS, &compiled);
   CHECK_GL_ERROR();
@@ -1474,7 +1477,7 @@ return is_compiled;
 // ----------------------------------------------------------------------------
 GLint glShaderObject::getAttribLocation(char* attribName)
 {
-   return glGetAttribLocationARB(ShaderObject, attribName);
+   return glGetAttribLocation(ShaderObject, attribName);
 }
 
 // ----------------------------------------------------------------------------
@@ -1483,7 +1486,7 @@ aVertexShader::aVertexShader()
   program_type = 1; 
    if (useGLSL)
    {
-       ShaderObject = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
+       ShaderObject = glCreateShaderObjectARB(GL_VERTEX_SHADER);
        CHECK_GL_ERROR();
    }
 }
@@ -1499,7 +1502,7 @@ aFragmentShader::aFragmentShader()
     program_type = 2;
     if (useGLSL)
     {
-        ShaderObject = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB); 
+        ShaderObject = glCreateShaderObjectARB(GL_FRAGMENT_SHADER); 
         CHECK_GL_ERROR();
     }
 }
@@ -1518,7 +1521,7 @@ aGeometryShader::aGeometryShader()
   program_type = 3; 
    if (useGLSL && bGeometryShader)
    {
-       ShaderObject = glCreateShaderObjectARB(GL_GEOMETRY_SHADER_EXT);
+       ShaderObject = glCreateShaderObjectARB(GL_GEOMETRY_SHADER);
        CHECK_GL_ERROR();
    }
 }

@@ -68,7 +68,7 @@ namespace cwc
        GLuint     ShaderObject;  //!< Shader Object
        GLubyte*   ShaderSource;  //!< ASCII Source-Code
        
-       GLcharARB* compiler_log;
+       GLchar* compiler_log;
        
        bool       is_compiled;   //!< true if compiled
        bool       _memalloc;     //!< true if memory for shader source was allocated
@@ -312,15 +312,15 @@ namespace cwc
 // Geometry Shaders are supported.
 bool InitOpenGLExtensions(void); //!< Initialize OpenGL Extensions (using glew) \ingroup GLSL
 bool HasGLSLSupport(void);       //!< Returns true if OpenGL Shading Language is supported. (This function will return a GLSL version number in a future release) \ingroup GLSL  
-bool HasOpenGL2Support(void);    //!< Returns true if OpenGL 2.0 is supported. This function is deprecated and shouldn't be used anymore. \ingroup GLSL \deprecated
+//bool HasOpenGL2Support(void);    //!< Returns true if OpenGL 2.0 is supported. This function is deprecated and shouldn't be used anymore. \ingroup GLSL \deprecated
 bool HasGeometryShaderSupport(void); //!< Returns true if Geometry Shaders are supported. \ingroup GLSL
 bool HasShaderModel4(void); //!< Returns true if Shader Model 4 is supported. \ingroup GLSL
 
 // these function names are deprecated, just here for backwards
 // compatibility. It is very likely they will be removed in a future version
-#define initGLExtensions InitOpenGLExtensions
-#define checkGLSL HasGLSLSupport
-#define checkGL2  HasOpenGL2Support
+//#define initGLExtensions InitOpenGLExtensions
+//#define checkGLSL HasGLSLSupport
+//#define checkGL2  HasOpenGL2Support
 //----------------------------------------------------------------------------
 
 };
