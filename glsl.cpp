@@ -88,12 +88,33 @@ char* aGLSLStrings[] = {
 	   glErr = glGetError();
 	   while (glErr != GL_NO_ERROR) 
        {
-	     const GLubyte* sError = gluErrorString(glErr);
-
-		 if (sError)
-			cout << "GL Error #" << glErr << "(" << gluErrorString(glErr) << ") " << " in File " << file.c_str() << " at line: " << line << endl;
-		 else
-		    cout << "GL Error #" << glErr << " (no message available)" << " in File " << file.c_str() << " at line: " << line << endl;
+	 		switch (glErr)
+		{
+			case GL_INVALID_ENUM:
+				fprintf( stderr, "Invalid enum.\n" );
+				break;
+			case GL_INVALID_VALUE:
+				fprintf( stderr, "Invalid value.\n" );
+				break;
+			case GL_INVALID_OPERATION:
+				fprintf( stderr, "Invalid Operation.\n" );
+				break;
+			case GL_STACK_OVERFLOW:
+				fprintf( stderr, "Stack overflow.\n" );
+				break;
+			case GL_STACK_UNDERFLOW:
+				fprintf(stderr, "Stack underflow.\n" );
+				break;
+			case GL_OUT_OF_MEMORY:
+				fprintf( stderr, "Out of memory.\n" );
+				break;
+		}
+// 	     const GLubyte* sError = gluErrorString(glErr);
+// 
+// 		 if (sError)
+// 			cout << "GL Error #" << glErr << "(" << gluErrorString(glErr) << ") " << " in File " << file.c_str() << " at line: " << line << endl;
+// 		 else
+// 		    cout << "GL Error #" << glErr << " (no message available)" << " in File " << file.c_str() << " at line: " << line << endl;
 			
 		 retCode = 1;
 		 glErr = glGetError();
@@ -131,8 +152,8 @@ char* aGLSLStrings[] = {
 
    bool HasGLSLSupport(void)
    {
-      bGeometryShader = HasGeometryShaderSupport();
-      bGPUShader4     = HasShaderModel4();
+      //bGeometryShader = HasGeometryShaderSupport();
+      //bGPUShader4     = HasShaderModel4();
       
       if (useGLSL) return true;  // already initialized and GLSL is available
       useGLSL = true;
@@ -161,24 +182,51 @@ char* aGLSLStrings[] = {
          cout << "OpenGL 1.2 core functions are available" << endl;
       }
 
-      if (GL_TRUE != glewGetExtension("GL_ARB_fragment_shader"))
+      //Extensions supported
+      if (!glewIsSupported("GL_ARB_fragment_shader"))
       {
           cout << "[WARNING] GL_ARB_fragment_shader extension is not available!\n";
           //useGLSL = false;
+      }else{
+          cout << "[OK] GL_ARB_fragment_shader extension is available!\n";
+
       }
 
-      if (GL_TRUE != glewGetExtension("GL_ARB_vertex_shader"))
+      if (!glewIsSupported("GL_ARB_vertex_shader"))
       {
           cout << "[WARNING] GL_ARB_vertex_shader extension is not available!\n";
           //useGLSL = false;
+      }else{
+          cout << "[OK] GL_ARB_vertex_shader extension is available!\n";
       }
 
-      if (GL_TRUE != glewGetExtension("GL_ARB_shader_objects"))
+      if (!glewIsSupported("GL_ARB_shader_objects"))
       {
           cout << "[WARNING] GL_ARB_shader_objects extension is not available!\n";
           //useGLSL = false;
+      }else{
+          cout << "[OK] GL_ARB_shader_objects extension is available!\n";
       }
-
+      
+      
+      if (!glewIsSupported("GL_ARB_geometry_shader4"))
+      {
+          cout << "[WARNING] GL_ARB_geometry_shader4 extension is not available!\n";
+	  bGeometryShader = false;
+      }else{
+          cout << "[OK] GL_ARB_geometry_shader4 extension is available!\n";
+	  bGeometryShader = true;
+      }
+      
+      if(!glewIsSupported("GL_EXT_gpu_shader4")){
+          cout << "[WARNING] GL_EXT_gpu_shader4 extension is not available!\n";
+	  bGPUShader4 = false;
+      }else{
+          cout << "[OK] GL_EXT_gpu_shader4 extension is available!\n";
+	  bGPUShader4 = true;
+      }
+      
+      //end detecting extensions
       if (useGLSL)
       {
           cout << "[OK] OpenGL Shading Language is available!\n\n";
@@ -200,21 +248,21 @@ char* aGLSLStrings[] = {
 //    }   
 
 
-   bool HasGeometryShaderSupport(void)
-   {
-      if (GL_TRUE != glewGetExtension("GL_ARB_geometry_shader4"))
-         return false;
-      
-      return true;
-   }
+//    bool HasGeometryShaderSupport(void)
+//    {
+//       if (GL_TRUE != glewGetExtension("GL_ARB_geometry_shader4"))
+//          return false;
+//       
+//       return true;
+//    }
 
-   bool HasShaderModel4(void)
-   {
-      if (GL_TRUE != glewGetExtension("GL_gpu_shader4"))
-         return false;
-
-      return true;
-   }
+//    bool HasShaderModel4(void)
+//    {
+//       if (GL_TRUE != glewGetExtension("GL_gpu_shader4"))
+//          return false;
+// 
+//       return true;
+//    }
 }
 
 //----------------------------------------------------------------------------- 
@@ -1338,7 +1386,7 @@ glShaderObject::~glShaderObject()
    
    if (is_compiled)
    { 
-        glDeleteObjectARB(ShaderObject);
+        glDeleteShader(ShaderObject);
         CHECK_GL_ERROR();
    }
 }
@@ -1437,7 +1485,7 @@ if (!useGLSL) return aGLSLStrings[0];
         return aGLSLStrings[3];
     }
 
-     glGetInfoLogARB(ShaderObject, blen, &slen, compiler_log);
+     glGetShaderInfoLog(ShaderObject, blen, &slen, compiler_log);
      CHECK_GL_ERROR();
      //cout << "compiler_log: \n", compiler_log);     
  }
@@ -1466,7 +1514,7 @@ GLint compiled = 0;
 
   glCompileShader(ShaderObject); 
   CHECK_GL_ERROR();
-  glGetObjectParameterivARB(ShaderObject, GL_COMPILE_STATUS, &compiled);
+  glGetShaderiv(ShaderObject, GL_COMPILE_STATUS, &compiled);
   CHECK_GL_ERROR();
 
   if (compiled) is_compiled=true;
@@ -1486,7 +1534,7 @@ aVertexShader::aVertexShader()
   program_type = 1; 
    if (useGLSL)
    {
-       ShaderObject = glCreateShaderObjectARB(GL_VERTEX_SHADER);
+       ShaderObject = glCreateShader(GL_VERTEX_SHADER);
        CHECK_GL_ERROR();
    }
 }
@@ -1502,7 +1550,7 @@ aFragmentShader::aFragmentShader()
     program_type = 2;
     if (useGLSL)
     {
-        ShaderObject = glCreateShaderObjectARB(GL_FRAGMENT_SHADER); 
+        ShaderObject = glCreateShader(GL_FRAGMENT_SHADER); 
         CHECK_GL_ERROR();
     }
 }
@@ -1521,7 +1569,7 @@ aGeometryShader::aGeometryShader()
   program_type = 3; 
    if (useGLSL && bGeometryShader)
    {
-       ShaderObject = glCreateShaderObjectARB(GL_GEOMETRY_SHADER);
+       ShaderObject = glCreateShader(GL_GEOMETRY_SHADER);
        CHECK_GL_ERROR();
    }
 }

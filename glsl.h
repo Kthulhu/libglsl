@@ -131,49 +131,49 @@ namespace cwc
       void       SetOutputPrimitiveType(int nOutputPrimitiveType); //!< Set the output primitive type for the geometry shader
       void       SetVerticesOut(int nVerticesOut);                 //!< Set the maximal number of vertices the geometry shader can output
      
-      GLint       GetUniformLocation(const GLcharARB *name);  //!< Retrieve Location (index) of a Uniform Variable
+      GLint       GetUniformLocation(const GLchar *name);  //!< Retrieve Location (index) of a Uniform Variable
 
       // Submitting Uniform Variables. You can set varname to 0 and specifiy index retrieved with GetUniformLocation (best performance)
-      bool       setUniform1f(GLcharARB* varname, GLfloat v0, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
-      bool       setUniform2f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
-      bool       setUniform3f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
-      bool       setUniform4f(GLcharARB* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
+      bool       setUniform1f(GLchar* varname, GLfloat v0, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
+      bool       setUniform2f(GLchar* varname, GLfloat v0, GLfloat v1, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
+      bool       setUniform3f(GLchar* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
+      bool       setUniform4f(GLchar* varname, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3, GLint index = -1);  //!< Specify value of uniform variable. \param varname The name of the uniform variable.
 
-      bool       setUniform1i(GLcharARB* varname, GLint v0, GLint index = -1);  //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
-      bool       setUniform2i(GLcharARB* varname, GLint v0, GLint v1, GLint index = -1); //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
-      bool       setUniform3i(GLcharARB* varname, GLint v0, GLint v1, GLint v2, GLint index = -1); //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
-      bool       setUniform4i(GLcharARB* varname, GLint v0, GLint v1, GLint v2, GLint v3, GLint index = -1); //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
+      bool       setUniform1i(GLchar* varname, GLint v0, GLint index = -1);  //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
+      bool       setUniform2i(GLchar* varname, GLint v0, GLint v1, GLint index = -1); //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
+      bool       setUniform3i(GLchar* varname, GLint v0, GLint v1, GLint v2, GLint index = -1); //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
+      bool       setUniform4i(GLchar* varname, GLint v0, GLint v1, GLint v2, GLint v3, GLint index = -1); //!< Specify value of uniform integer variable. \param varname The name of the uniform variable.
 
       // Note: unsigned integers require GL_EXT_gpu_shader4 (for example GeForce 8800)
-      bool       setUniform1ui(GLcharARB* varname, GLuint v0, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
-      bool       setUniform2ui(GLcharARB* varname, GLuint v0, GLuint v1, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
-      bool       setUniform3ui(GLcharARB* varname, GLuint v0, GLuint v1, GLuint v2, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
-      bool       setUniform4ui(GLcharARB* varname, GLuint v0, GLuint v1, GLuint v2, GLuint v3, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
+      bool       setUniform1ui(GLchar* varname, GLuint v0, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
+      bool       setUniform2ui(GLchar* varname, GLuint v0, GLuint v1, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
+      bool       setUniform3ui(GLchar* varname, GLuint v0, GLuint v1, GLuint v2, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
+      bool       setUniform4ui(GLchar* varname, GLuint v0, GLuint v1, GLuint v2, GLuint v3, GLint index = -1); //!< Specify value of uniform unsigned integer variable. Only works if GL_EXT_gpu_shader4 is available. \param varname The name of the uniform variable.
 
       // Arrays
-      bool       setUniform1fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
-      bool       setUniform2fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
-      bool       setUniform3fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
-      bool       setUniform4fv(GLcharARB* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform1fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform2fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform3fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform4fv(GLchar* varname, GLsizei count, GLfloat *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
       
-      bool       setUniform1iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
-      bool       setUniform2iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
-      bool       setUniform3iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
-      bool       setUniform4iv(GLcharARB* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform1iv(GLchar* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform2iv(GLchar* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform3iv(GLchar* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
+      bool       setUniform4iv(GLchar* varname, GLsizei count, GLint *value, GLint index = -1); //!< Specify values of uniform array. \param varname The name of the uniform variable.
       
-      bool       setUniform1uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
-      bool       setUniform2uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
-      bool       setUniform3uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
-      bool       setUniform4uiv(GLcharARB* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
+      bool       setUniform1uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
+      bool       setUniform2uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
+      bool       setUniform3uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
+      bool       setUniform4uiv(GLchar* varname, GLsizei count, GLuint *value, GLint index = -1); //!< Specify values of uniform array. Requires GL_EXT_gpu_shader4. \param varname The name of the uniform variable.
       
-      bool       setUniformMatrix2fv(GLcharARB* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index = -1); //!< Specify values of uniform 2x2 matrix. \param varname The name of the uniform variable.
-      bool       setUniformMatrix3fv(GLcharARB* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index = -1); //!< Specify values of uniform 3x3 matrix. \param varname The name of the uniform variable.
-      bool       setUniformMatrix4fv(GLcharARB* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index = -1); //!< Specify values of uniform 4x4 matrix. \param varname The name of the uniform variable.
+      bool       setUniformMatrix2fv(GLchar* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index = -1); //!< Specify values of uniform 2x2 matrix. \param varname The name of the uniform variable.
+      bool       setUniformMatrix3fv(GLchar* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index = -1); //!< Specify values of uniform 3x3 matrix. \param varname The name of the uniform variable.
+      bool       setUniformMatrix4fv(GLchar* varname, GLsizei count, GLboolean transpose, GLfloat *value, GLint index = -1); //!< Specify values of uniform 4x4 matrix. \param varname The name of the uniform variable.
  
       // Receive Uniform variables:
-      void       getUniformfv(GLcharARB* varname, GLfloat* values, GLint index = -1); //!< Receive value of uniform variable. \param varname The name of the uniform variable.
-      void       getUniformiv(GLcharARB* varname, GLint* values, GLint index = -1); //!< Receive value of uniform variable. \param varname The name of the uniform variable.
-      void       getUniformuiv(GLcharARB* varname, GLuint* values, GLint index = -1); //!< Receive value of uniform variable. Requires GL_EXT_gpu_shader4 \param varname The name of the uniform variable.
+      void       getUniformfv(GLchar* varname, GLfloat* values, GLint index = -1); //!< Receive value of uniform variable. \param varname The name of the uniform variable.
+      void       getUniformiv(GLchar* varname, GLint* values, GLint index = -1); //!< Receive value of uniform variable. \param varname The name of the uniform variable.
+      void       getUniformuiv(GLchar* varname, GLuint* values, GLint index = -1); //!< Receive value of uniform variable. Requires GL_EXT_gpu_shader4 \param varname The name of the uniform variable.
 
       /*! Bind Vertex Attribute Location
       Warning: NVidia implementation is different than the GLSL standard:
@@ -260,7 +260,7 @@ namespace cwc
       GLuint      ProgramObject;                      // GLProgramObject
       
 
-      GLcharARB*  linker_log;
+      GLchar*  linker_log;
       bool        is_linked;
       std::vector<glShaderObject*> ShaderList;       // List of all Shader Programs
 
@@ -313,8 +313,8 @@ namespace cwc
 bool InitOpenGLExtensions(void); //!< Initialize OpenGL Extensions (using glew) \ingroup GLSL
 bool HasGLSLSupport(void);       //!< Returns true if OpenGL Shading Language is supported. (This function will return a GLSL version number in a future release) \ingroup GLSL  
 //bool HasOpenGL2Support(void);    //!< Returns true if OpenGL 2.0 is supported. This function is deprecated and shouldn't be used anymore. \ingroup GLSL \deprecated
-bool HasGeometryShaderSupport(void); //!< Returns true if Geometry Shaders are supported. \ingroup GLSL
-bool HasShaderModel4(void); //!< Returns true if Shader Model 4 is supported. \ingroup GLSL
+// bool HasGeometryShaderSupport(void); //!< Returns true if Geometry Shaders are supported. \ingroup GLSL
+// bool HasShaderModel4(void); //!< Returns true if Shader Model 4 is supported. \ingroup GLSL
 
 // these function names are deprecated, just here for backwards
 // compatibility. It is very likely they will be removed in a future version
