@@ -122,10 +122,11 @@ char* aGLSLStrings[] = {
          return false;
       }
 
-      cout << "OpenGL Vendor: " << (char*) glGetString(GL_VENDOR) << "\n";
-      cout << "OpenGL Renderer: " << (char*) glGetString(GL_RENDERER) << "\n";
-      cout << "OpenGL Version: " << (char*) glGetString(GL_VERSION) << "\n\n";
-      //cout << "OpenGL Extensions:\n" << (char*) glGetString(GL_EXTENSIONS) << "\n\n";
+    std::cout << "Using GLEW " << glewGetString(GLEW_VERSION)<< endl;
+    std::cout << "OpenGL Vendor: " << (char*) glGetString(GL_VENDOR) << "\n";
+    std::cout << "OpenGL Renderer: " << (char*) glGetString(GL_RENDERER) << "\n";
+    std::cout << "OpenGL Version: " << (char*) glGetString(GL_VERSION) << "\n";
+    std::cout << "GLSL: " << glGetString (GL_SHADING_LANGUAGE_VERSION)<< "\n\n";
 
       HasGLSLSupport();
 
