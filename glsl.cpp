@@ -309,10 +309,10 @@ glShader::~glShader()
             glDetachShader(ProgramObject, ShaderList[i]->ShaderObject);
             CHECK_GL_ERROR(); // if you get an error here, you deleted the Program object first and then
                            // the ShaderObject! Always delete ShaderObjects last!
-            if (_mM) delete ShaderList[i]; 
+
+	    if (_mM) delete ShaderList[i]; 
        }                      
-//BUG according to http://www.opengl.org/sdk/docs/man/xhtml/glDeleteShader.xml - this is wrong !!
-       glDeleteShader(ProgramObject);
+       glDeleteProgram(ProgramObject);
        CHECK_GL_ERROR();
     }
 

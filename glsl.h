@@ -268,7 +268,7 @@ namespace cwc
 
       GLchar*  linker_log;
       bool        is_linked;
-      std::vector<glShaderObject*> ShaderList;       // List of all Shader Programs
+      std::vector<glShaderObject*> ShaderList;       // List of all Shader Programs (i.e. vertex, fragment, geometry etc)
 
       bool        _mM;
       bool        _noshader;
