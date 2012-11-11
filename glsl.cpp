@@ -371,9 +371,9 @@ unsigned int i;
 
     if (_bUsesGeometryShader)
     {
-       glProgramParameteri(ProgramObject, GL_GEOMETRY_INPUT_TYPE, _nInputPrimitiveType);
-       glProgramParameteri(ProgramObject, GL_GEOMETRY_OUTPUT_TYPE, _nOutputPrimitiveType);
-       glProgramParameteri(ProgramObject, GL_GEOMETRY_VERTICES_OUT, _nVerticesOut);
+       glProgramParameteriARB(ProgramObject, GL_GEOMETRY_INPUT_TYPE, _nInputPrimitiveType);
+       glProgramParameteriARB(ProgramObject, GL_GEOMETRY_OUTPUT_TYPE, _nOutputPrimitiveType);
+       glProgramParameteriARB(ProgramObject, GL_GEOMETRY_VERTICES_OUT, _nVerticesOut);
     }
 
     if (is_linked)  // already linked, detach everything first
